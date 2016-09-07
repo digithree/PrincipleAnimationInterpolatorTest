@@ -1,9 +1,13 @@
 package ie.simonkenny.principleanimationinterpolatortest;
 
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -13,11 +17,14 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 
 /**
  * Created by simonkenny on 07/09/2016.
  */
 public class BezierInterpolatorActivity extends AppCompatActivity {
+
+    private static final int TIMER_WAIT = 1000;
 
     @Bind(R.id.seek_bar_value_edit)
     AppCompatSeekBar mSbValueEdit;
@@ -32,7 +39,12 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
     @Bind(R.id.edit_text_duration)
     EditText mEtDuration;
 
-    WeakReference<EditText> mCurrentEditTextWeakRef;
+    private WeakReference<EditText> mCurrentEditTextWeakRef;
+
+    private Handler mHandler = new Handler();
+
+    private BezierInterpolator mBezierInterpolator;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,19 +71,19 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
                     } else {
                         editText.setText(String.format(Locale.getDefault(), "%.2f", (((float)i) / 1000.f)));
                     }
+                    restartTimer();
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+
+        // first time creation of BezierInterpolator with default values
+        updateBezierInterpolator();
     }
 
 
@@ -111,20 +123,25 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
         }
     };
 
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Log.d("BezierInterpolatorTimer", "timer elapsed at "+ SystemClock.currentThreadTimeMillis());
+            updateBezierInterpolator();
+        }
+    };
 
-
-    /*
-    @OnClick(R.id.button_ease_in)
-    public void buttonEaseInClick(View v) {
-        startEaseInAnimations();
+    private void restartTimer() {
+        mHandler.removeCallbacks(timerRunnable);
+        mHandler.postDelayed(timerRunnable, TIMER_WAIT);
     }
 
-    private void startEaseInAnimations() {
+    private void updateBezierInterpolator() {
         String c1xText = mEtC1x.getText().toString();
         String c1yText = mEtC1y.getText().toString();
         String c2xText = mEtC2x.getText().toString();
         String c2yText = mEtC2y.getText().toString();
-        String durationText = mEtDurationEase.getText().toString();
+        String durationText = mEtDuration.getText().toString();
         if (c1xText.isEmpty() || c1yText.isEmpty() || c2xText.isEmpty() || c2yText.isEmpty() || durationText.isEmpty()) {
             return;
         }
@@ -143,6 +160,8 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
             e.printStackTrace();
             return;
         }
+        mBezierInterpolator = new BezierInterpolator(new PointF(c1x, c1y), new PointF(c2x, c2y));
+        /*
         Animation animation1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate_in_from_bottom);
         animation1.setInterpolator(new FastOutSlowInInterpolator());
         animation1.setDuration((int)duration);
@@ -151,6 +170,6 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
         animation2.setDuration((int)duration);
         mIv1.startAnimation(animation1);
         mIv2.startAnimation(animation2);
+        */
     }
-    */
 }
