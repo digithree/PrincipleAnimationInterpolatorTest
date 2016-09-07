@@ -11,4 +11,6 @@
     <color name="curve_main_line">#000000</color>
     <color name="curve_control_line">#9999FF</color>
     <color name="curve_control_circle">#FF9999</color>
+
+    <color name="curve_centre_line">#FF9999</color>
 </resources>

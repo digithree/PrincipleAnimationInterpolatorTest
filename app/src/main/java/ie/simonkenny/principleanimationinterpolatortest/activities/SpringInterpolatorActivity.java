@@ -28,6 +28,7 @@ import butterknife.OnTextChanged;
 import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.SpringInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.utils.SPrefUtils;
+import ie.simonkenny.principleanimationinterpolatortest.views.SpringCurveView;
 
 /**
  * Created by simonkenny on 07/09/2016.
@@ -55,8 +56,8 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
     @Bind(R.id.edit_text_duration)
     EditText mEtDuration;
 
-    //@Bind(R.id.bezier_curve_view)
-    //BezierCurveView mBezierCurveView;
+    @Bind(R.id.bezier_curve_view)
+    SpringCurveView mSpringCurveView;
 
     @Bind(R.id.animation_container)
     ViewGroup mVgAnimationContainer;
@@ -127,18 +128,6 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
 
         // first time creation of BezierInterpolator with default values
         updateSpringInterpolator();
-
-        /*
-        Animation animation1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate_in_from_bottom);
-        animation1.setInterpolator(new OvershootInterpolator());
-        animation1.setDuration((int)duration);
-        Animation animation2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate_in_from_bottom);
-        //animation2.setInterpolator(new SpringInterpolator(200, 20, false));
-        animation2.setInterpolator(new SpringInterpolator(tension, friction, false));
-        animation2.setDuration((int)duration);
-        //mIv3.startAnimation(animation1);
-        //mIv4.startAnimation(animation2);
-        */
     }
 
     private void initValuesFromPrefs() {
@@ -242,7 +231,7 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
     public void onVisualizeButtonClick() {
         mBtnVisualize.setEnabled(false);
         mBtnTest.setEnabled(true);
-        //mBezierCurveView.setVisibility(View.VISIBLE);
+        mSpringCurveView.setVisibility(View.VISIBLE);
         mVgAnimationContainer.setVisibility(View.GONE);
     }
 
@@ -250,7 +239,7 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
     public void onTestButtonClick() {
         mBtnVisualize.setEnabled(true);
         mBtnTest.setEnabled(false);
-        //mBezierCurveView.setVisibility(View.GONE);
+        mSpringCurveView.setVisibility(View.GONE);
         mVgAnimationContainer.setVisibility(View.VISIBLE);
     }
 
