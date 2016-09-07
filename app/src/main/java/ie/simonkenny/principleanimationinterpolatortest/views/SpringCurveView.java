@@ -100,7 +100,7 @@ public class SpringCurveView extends View implements IInterpolatorRenderView {
         PointF lastPoint = new PointF(0, 0);
         for (int i = 1 ; i <= NUM_POINTS ; i++) {
             float xNorm = ((float)i) / NUM_POINTS;
-            float yNorm = interpolator.getInterpolation(xNorm);
+            float yNorm = interpolator.getInterpolation(xNorm) * 0.5f;
             canvas.drawLine(
                     translateFromNormalX(lastPoint.x, size, offsetX),
                     translateFromNormalY(lastPoint.y, size, offsetY),

@@ -225,6 +225,7 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
             return;
         }
         mSpringInterpolator = new SpringInterpolator(tension, friction, false);
+        mSpringCurveView.setInterpolator(mSpringInterpolator);
     }
 
     @OnClick(R.id.button_visualize)
