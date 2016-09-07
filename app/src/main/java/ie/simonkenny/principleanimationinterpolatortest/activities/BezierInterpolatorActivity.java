@@ -50,6 +50,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
 
 
     private WeakReference<EditText> mCurrentEditTextWeakRef;
+    private boolean mSeekBarChangeFreeze = false;
 
     private Handler mHandler = new Handler();
 
@@ -76,7 +77,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
         mSbValueEdit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (mCurrentEditTextWeakRef != null && mCurrentEditTextWeakRef.get() != null) {
+                if (!mSeekBarChangeFreeze && mCurrentEditTextWeakRef != null && mCurrentEditTextWeakRef.get() != null) {
                     EditText editText = mCurrentEditTextWeakRef.get();
                     if (editText == mEtDuration) {
                         editText.setText(String.format(Locale.getDefault(), "%d", i));
@@ -106,13 +107,16 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
                 return;
             }
             EditText editText = (EditText) view;
+            mSeekBarChangeFreeze = true;
             try {
                 float value = Float.parseFloat(editText.getText().toString());
                 mSbValueEdit.setProgress((int)(value * 1000));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
+                mSeekBarChangeFreeze = false;
                 return;
             }
+            mSeekBarChangeFreeze = false;
             mCurrentEditTextWeakRef = new WeakReference<>(editText);
         }
     };
@@ -124,13 +128,16 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
                 return;
             }
             EditText editText = (EditText) view;
+            mSeekBarChangeFreeze = true;
             try {
                 int value = Integer.parseInt(editText.getText().toString());
                 mSbValueEdit.setProgress(value);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
+                mSeekBarChangeFreeze = false;
                 return;
             }
+            mSeekBarChangeFreeze = false;
             mCurrentEditTextWeakRef = new WeakReference<>(editText);
         }
     };
