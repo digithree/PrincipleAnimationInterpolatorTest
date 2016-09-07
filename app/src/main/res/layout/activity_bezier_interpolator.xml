@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/seek_bar_value_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/size_small"/>
@@ -85,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
-            android:id="@+id/edit_text_duration_ease"
+            android:id="@+id/edit_text_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/bezier_duration"
