@@ -10,7 +10,10 @@ import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import java.lang.ref.WeakReference;
@@ -19,6 +22,7 @@ import java.util.Locale;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
@@ -45,8 +49,19 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
 
     @Bind(R.id.bezier_curve_view)
     BezierCurveView mBezierCurveView;
+
     @Bind(R.id.animation_container)
     ViewGroup mVgAnimationContainer;
+    @Bind(R.id.image_view_animate)
+    ImageView mIvAnimate;
+
+    private final int []ANIMATION_RES_IDS = {
+            R.anim.animate_step_1,
+            R.anim.animate_step_2,
+            R.anim.animate_step_3,
+            R.anim.animate_step_4,
+            R.anim.animate_step_5
+    };
 
 
     private WeakReference<EditText> mCurrentEditTextWeakRef;
@@ -55,8 +70,9 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     private BezierInterpolator mBezierInterpolator;
+    private float mDuration = 0.f;
 
-    private int mAnimationStep = 0;
+    private int mAnimationStep = -1;
 
 
     @Override
@@ -168,13 +184,13 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
         float c1y;
         float c2x;
         float c2y;
-        float duration;
+        mDuration = 0.f;
         try {
             c1x = Float.parseFloat(c1xText);
             c1y = Float.parseFloat(c1yText);
             c2x = Float.parseFloat(c2xText);
             c2y = Float.parseFloat(c2yText);
-            duration = Float.parseFloat(durationText);
+            mDuration = Float.parseFloat(durationText);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
@@ -197,21 +213,26 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
 
     @OnClick(R.id.animation_container)
     public void onAnimationContainerClick() {
-        // TODO : next animation
+        doNextAnimationStep();
+    }
+
+    @OnLongClick(R.id.animation_container)
+    public boolean onAnimationContainerLongClick() {
+        mAnimationStep = -1;
+        doNextAnimationStep();
+        return true;
     }
 
     private void doNextAnimationStep() {
-        //mAnimationStep
-        // TODO
-        /*
-        Animation animation1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate_in_from_bottom);
-        animation1.setInterpolator(new FastOutSlowInInterpolator());
-        animation1.setDuration((int)duration);
-        Animation animation2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate_in_from_bottom);
-        animation2.setInterpolator(new BezierInterpolator(new PointF(c1x, c1y), new PointF(c2x, c2y)));
-        animation2.setDuration((int)duration);
-        mIv1.startAnimation(animation1);
-        mIv2.startAnimation(animation2);
-        */
+        if (mBezierInterpolator != null) {
+            mAnimationStep = (mAnimationStep + 1) % ANIMATION_RES_IDS.length;
+            // do animation
+            mIvAnimate.setVisibility(View.VISIBLE);
+            Animation animation = AnimationUtils.loadAnimation(getBaseContext(), ANIMATION_RES_IDS[mAnimationStep]);
+            animation.setInterpolator(mBezierInterpolator);
+            animation.setDuration((int) mDuration);
+            animation.setFillAfter(true);
+            mIvAnimate.startAnimation(animation);
+        }
     }
 }

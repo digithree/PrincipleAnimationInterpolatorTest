@@ -6,7 +6,7 @@
     <string name="main_menu_item_bezier">Bezier Curve</string>
     <string name="main_menu_item_spring">Spring</string>
 
-    <string name="call_to_action">Tap to animate</string>
+    <string name="call_to_action">Tap to animate\n\nLong tap to reset</string>
 
     <string name="button_visualize">Visualize</string>
     <string name="button_test">Test</string>

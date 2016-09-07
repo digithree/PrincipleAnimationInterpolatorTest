@@ -110,6 +110,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
+            <ImageView
+                android:id="@+id/image_view_animate"
+                android:layout_width="@dimen/square_size"
+                android:layout_height="@dimen/square_size"
+                android:layout_gravity="center"
+                android:background="@color/colorAccent"
+                android:visibility="invisible"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
