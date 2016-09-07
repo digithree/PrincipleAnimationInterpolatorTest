@@ -5,7 +5,11 @@
 
     <dimen name="square_size">50dp</dimen>
 
-    <dimen name="menu_min_space">50dp</dimen>
+
+    <!-- sizes -->
+    <dimen name="size_small">8dp</dimen>
+    <dimen name="size_standard">24dp</dimen>
+    <dimen name="size_large">48dp</dimen>
 
     <!-- fonts -->
     <dimen name="font_size_large">18sp</dimen>

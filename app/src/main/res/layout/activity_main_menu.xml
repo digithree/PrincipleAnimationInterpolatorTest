@@ -17,8 +17,8 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/menu_min_space"
-        android:layout_marginBottom="@dimen/menu_min_space"
+        android:layout_marginTop="@dimen/size_large"
+        android:layout_marginBottom="@dimen/size_large"
         android:layout_gravity="center_horizontal">
         <ImageButton
             android:id="@+id/thumb_button_bezier"
@@ -41,7 +41,7 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/menu_min_space"
+        android:layout_marginBottom="@dimen/size_large"
         android:layout_gravity="center_horizontal">
         <ImageButton
             android:id="@+id/thumb_button_spring"

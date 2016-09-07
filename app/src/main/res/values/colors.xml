@@ -8,4 +8,6 @@
     <color name="col2">#9999FF</color>
     <color name="col3">#99FF99</color>
     <color name="col4">#FF88FF</color>
+
+    <color name="box_bg">#EEEEEE</color>
 </resources>

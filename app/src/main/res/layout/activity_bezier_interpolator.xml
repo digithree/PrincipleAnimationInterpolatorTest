@@ -1,6 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
+    <android.support.v7.widget.AppCompatSeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_small"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edit_text_c1x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/bezier_coord_px1"
+                android:text="@string/bezier_coord_px1_default"
+                android:inputType="numberDecimal"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/size_small"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edit_text_c1y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/bezier_coord_py1"
+                android:text="@string/bezier_coord_py1_default"
+                android:inputType="numberDecimal"
+                />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edit_text_c2x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/bezier_coord_px2"
+                android:text="@string/bezier_coord_px2_default"
+                android:inputType="numberDecimal"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/size_small"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edit_text_c2y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/bezier_coord_py2"
+                android:text="@string/bezier_coord_py2_default"
+                android:inputType="numberDecimal"
+                />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edit_text_duration_ease"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/bezier_duration"
+            android:text="@string/bezier_duration_default"
+            android:inputType="number"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/box_bg"
+        android:layout_marginTop="@dimen/size_standard">
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/size_standard"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_visualize"/>
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/size_large"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_test" />
+    </LinearLayout>
+
+    <!--
+    <Button
+        android:id="@+id/button_ease_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginBottom="8dp"
+        android:text="Ease in / Bezier"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/image_view_1"
+            android:layout_width="@dimen/square_size"
+            android:layout_height="@dimen/square_size"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/col1"/>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/image_view_2"
+            android:layout_width="@dimen/square_size"
+            android:layout_height="@dimen/square_size"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/col2"/>
+    </LinearLayout>
+    -->
 </LinearLayout>
