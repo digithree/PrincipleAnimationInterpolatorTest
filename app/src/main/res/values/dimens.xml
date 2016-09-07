@@ -5,6 +5,7 @@
 
     <dimen name="square_size">50dp</dimen>
 
+    <dimen name="bezier_control_point_circle_radius">4dp</dimen>
 
     <!-- sizes -->
     <dimen name="size_small">8dp</dimen>

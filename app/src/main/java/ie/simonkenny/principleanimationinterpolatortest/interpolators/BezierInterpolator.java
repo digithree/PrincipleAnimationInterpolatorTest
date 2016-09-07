@@ -23,6 +23,14 @@ public class BezierInterpolator extends BaseInterpolator {
         init();
     }
 
+    public PointF getControlPoint1() {
+        return controlPoint1;
+    }
+
+    public PointF getControlPoint2() {
+        return controlPoint2;
+    }
+
     @Override
     public float getInterpolation(float v) {
         return samples[(int)(v * (float)(NUM_SAMPLES-1))];

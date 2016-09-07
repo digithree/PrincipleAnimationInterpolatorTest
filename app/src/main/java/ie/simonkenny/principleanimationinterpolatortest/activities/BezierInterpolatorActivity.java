@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
+import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
 
 /**
  * Created by simonkenny on 07/09/2016.
@@ -39,6 +40,10 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
     EditText mEtC2y;
     @Bind(R.id.edit_text_duration)
     EditText mEtDuration;
+
+    @Bind(R.id.bezier_curve_view)
+    BezierCurveView mBezierCurveView;
+
 
     private WeakReference<EditText> mCurrentEditTextWeakRef;
 
@@ -162,6 +167,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
             return;
         }
         mBezierInterpolator = new BezierInterpolator(new PointF(c1x, c1y), new PointF(c2x, c2y));
+        mBezierCurveView.setInterpolator(mBezierInterpolator);
         /*
         Animation animation1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate_in_from_bottom);
         animation1.setInterpolator(new FastOutSlowInInterpolator());

@@ -101,6 +101,10 @@
         android:layout_weight="1"
         android:background="@color/box_bg"
         android:layout_marginTop="@dimen/size_standard">
+        <ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView
+            android:id="@+id/bezier_curve_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <LinearLayout
