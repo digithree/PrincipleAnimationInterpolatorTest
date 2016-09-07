@@ -5,4 +5,8 @@
     <string name="main_menu_title">Choose an interpolator</string>
     <string name="main_menu_item_bezier">Bezier Curve</string>
     <string name="main_menu_item_spring">Spring</string>
+
+    <string name="bezier_interpolator_title">Bezier Curve Interpolator</string>
+
+    <string name="spring_interpolator_title">Spring Interpolator</string>
 </resources>

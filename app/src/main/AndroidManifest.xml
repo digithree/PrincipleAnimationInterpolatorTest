@@ -17,6 +17,12 @@
         </activity>
         <activity android:name=".MainActivity">
         </activity>
+        <activity android:name=".BezierInterpolatorActivity"
+            android:label="@string/bezier_interpolator_title"
+            android:parentActivityName=".MainMenuActivity" />
+        <activity android:name=".SpringInterpolatorActivity"
+            android:label="@string/spring_interpolator_title"
+            android:parentActivityName=".MainMenuActivity" />
     </application>
 
 </manifest>
