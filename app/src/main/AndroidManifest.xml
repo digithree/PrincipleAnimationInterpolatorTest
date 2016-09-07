@@ -8,21 +8,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainMenuActivity"
+        <activity android:name=".activities.MainMenuActivity"
             android:label="@string/app_name_for_humans">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
         </activity>
-        <activity android:name=".BezierInterpolatorActivity"
+        <activity android:name=".activities.BezierInterpolatorActivity"
             android:label="@string/bezier_interpolator_title"
-            android:parentActivityName=".MainMenuActivity" />
-        <activity android:name=".SpringInterpolatorActivity"
+            android:parentActivityName=".activities.MainMenuActivity" />
+        <activity android:name=".activities.SpringInterpolatorActivity"
             android:label="@string/spring_interpolator_title"
-            android:parentActivityName=".MainMenuActivity" />
+            android:parentActivityName=".activities.MainMenuActivity" />
     </application>
 
 </manifest>

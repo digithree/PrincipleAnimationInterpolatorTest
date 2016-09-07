@@ -1,4 +1,4 @@
-package ie.simonkenny.principleanimationinterpolatortest;
+package ie.simonkenny.principleanimationinterpolatortest.activities;
 
 import android.graphics.PointF;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
@@ -18,6 +18,7 @@ import java.util.Arrays;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.SpringInterpolator;
 

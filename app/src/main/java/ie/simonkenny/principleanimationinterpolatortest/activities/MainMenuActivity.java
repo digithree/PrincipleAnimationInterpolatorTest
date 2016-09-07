@@ -1,4 +1,4 @@
-package ie.simonkenny.principleanimationinterpolatortest;
+package ie.simonkenny.principleanimationinterpolatortest.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ie.simonkenny.principleanimationinterpolatortest.R;
 
 /**
  * Created by simonkenny on 07/09/2016.

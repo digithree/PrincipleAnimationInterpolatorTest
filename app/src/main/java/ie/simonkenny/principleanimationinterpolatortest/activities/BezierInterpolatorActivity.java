@@ -1,4 +1,4 @@
-package ie.simonkenny.principleanimationinterpolatortest;
+package ie.simonkenny.principleanimationinterpolatortest.activities;
 
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 
 /**
