@@ -1,9 +1,11 @@
 package ie.simonkenny.principleanimationinterpolatortest.activities;
 
+import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -24,14 +26,28 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import butterknife.OnTextChanged;
 import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
+import ie.simonkenny.principleanimationinterpolatortest.utils.SPrefUtils;
 import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
 
 /**
  * Created by simonkenny on 07/09/2016.
  */
 public class BezierInterpolatorActivity extends AppCompatActivity {
+
+    private static final String PREF_PX1 = "pref_bezier_px1";
+    private static final String PREF_PY1 = "pref_bezier_py1";
+    private static final String PREF_PX2 = "pref_bezier_px2";
+    private static final String PREF_PY2 = "pref_bezier_py2";
+    private static final String PREF_DURATION = "pref_bezier_duration";
+
+    private static final String DEFAULT_PX1 = "0.25";
+    private static final String DEFAULT_PY1 = "0.1";
+    private static final String DEFAULT_PX2 = "0.25";
+    private static final String DEFAULT_PY2 = "1.0";
+    private static final String DEFAULT_DURATION = "1000";
 
     private static final int TIMER_WAIT = 1000;
 
@@ -117,8 +133,40 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
+        // load values if exist
+        initValuesFromPrefs();
+
         // first time creation of BezierInterpolator with default values
         updateBezierInterpolator();
+    }
+
+    private void initValuesFromPrefs() {
+        SharedPreferences sharedPreferences = SPrefUtils.getPrefManager(getApplicationContext());
+        mEtC1x.setText(sharedPreferences.getString(PREF_PX1, DEFAULT_PX1));
+        mEtC1y.setText(sharedPreferences.getString(PREF_PY1, DEFAULT_PY1));
+        mEtC2x.setText(sharedPreferences.getString(PREF_PX2, DEFAULT_PX2));
+        mEtC2y.setText(sharedPreferences.getString(PREF_PY2, DEFAULT_PY2));
+        mEtDuration.setText(sharedPreferences.getString(PREF_DURATION, DEFAULT_DURATION));
+    }
+
+    @OnTextChanged(R.id.edit_text_c1x)
+    void onC1xTextChanged(CharSequence text) {
+        SPrefUtils.saveString(getApplicationContext(), PREF_PX1, text.toString());
+    }
+
+    @OnTextChanged(R.id.edit_text_c1y)
+    void onC1yTextChanged(CharSequence text) {
+        SPrefUtils.saveString(getApplicationContext(), PREF_PY1, text.toString());
+    }
+
+    @OnTextChanged(R.id.edit_text_c2x)
+    void onC2xTextChanged(CharSequence text) {
+        SPrefUtils.saveString(getApplicationContext(), PREF_PX2, text.toString());
+    }
+
+    @OnTextChanged(R.id.edit_text_c2y)
+    void onC2yTextChanged(CharSequence text) {
+        SPrefUtils.saveString(getApplicationContext(), PREF_PY2, text.toString());
     }
 
 
