@@ -4,11 +4,9 @@ import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -49,6 +47,9 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
     private static final String DEFAULT_DURATION = "1000";
 
     private static final int TIMER_WAIT = 1000;
+
+    private static final int DURATION_MAX = 3000;
+
 
     @Bind(R.id.seek_bar_value_edit)
     AppCompatSeekBar mSbValueEdit;
@@ -104,7 +105,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bezier_interpolator);
         ButterKnife.bind(this);
 
-        mSbValueEdit.setMax(1000);
+        mSbValueEdit.setMax(DURATION_MAX);
 
         mEtC1x.setOnFocusChangeListener(mCoordinateFocusChangeListener);
         mEtC1y.setOnFocusChangeListener(mCoordinateFocusChangeListener);
@@ -120,7 +121,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
                     if (editText == mEtDuration) {
                         editText.setText(String.format(Locale.getDefault(), "%d", i));
                     } else {
-                        editText.setText(String.format(Locale.getDefault(), "%.2f", (((float)i) / 1000.f)));
+                        editText.setText(String.format(Locale.getDefault(), "%.2f", (((float)i) / (float)DURATION_MAX)));
                     }
                     restartTimer();
                 }
@@ -185,7 +186,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
             mSeekBarChangeFreeze = true;
             try {
                 float value = Float.parseFloat(editText.getText().toString());
-                mSbValueEdit.setProgress((int)(value * 1000));
+                mSbValueEdit.setProgress((int)(value * DURATION_MAX));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 mSeekBarChangeFreeze = false;

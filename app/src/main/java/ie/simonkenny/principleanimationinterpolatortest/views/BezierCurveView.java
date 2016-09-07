@@ -69,7 +69,6 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
 
     // IInterpolatorRenderView implementation
 
-
     @Override
     public void setInterpolator(BaseInterpolator interpolator) {
         if (interpolator instanceof BezierInterpolator) {
@@ -89,7 +88,6 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
 
         PointF canvasDim = new PointF(canvas.getWidth(), canvas.getHeight());
         float size = Math.min(canvasDim.x, canvasDim.y) - getContext().getResources().getDimensionPixelSize(R.dimen.size_standard);
-        //float size = 300.f;
         float offsetX = (canvasDim.x / 2) - (size / 2);
         float offsetY = (canvasDim.y / 2) - (size / 2);
 

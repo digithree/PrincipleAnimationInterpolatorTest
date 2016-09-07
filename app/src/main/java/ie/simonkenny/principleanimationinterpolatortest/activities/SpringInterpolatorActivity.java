@@ -45,6 +45,8 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
 
     private static final int TIMER_WAIT = 1000;
 
+    private static final int DURATION_MAX = 3000;
+
 
     @Bind(R.id.seek_bar_value_edit)
     AppCompatSeekBar mSbValueEdit;
@@ -96,7 +98,7 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_spring_interpolator);
         ButterKnife.bind(this);
 
-        mSbValueEdit.setMax(1000);
+        mSbValueEdit.setMax(DURATION_MAX);
 
         mEtTension.setOnFocusChangeListener(mValueFocusChangeListener);
         mEtFriction.setOnFocusChangeListener(mValueFocusChangeListener);
@@ -110,7 +112,7 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
                     if (editText == mEtDuration) {
                         editText.setText(String.format(Locale.getDefault(), "%d", i));
                     } else {
-                        editText.setText(String.format(Locale.getDefault(), "%.2f", (((float)i) / 1000.f)));
+                        editText.setText(String.format(Locale.getDefault(), "%d", (i != 0 ? (i / 10) : 0)));
                     }
                     restartTimer();
                 }
