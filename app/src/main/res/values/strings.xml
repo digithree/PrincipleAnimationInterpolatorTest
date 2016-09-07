@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PrincipleAnimationInterpolatorTest</string>
+    <string name="app_name_for_humans">Principle Animation Interpolator Tester</string>
+
+    <string name="main_menu_title">Choose an interpolator</string>
+    <string name="main_menu_item_bezier">Bezier Curve</string>
+    <string name="main_menu_item_spring">Spring</string>
 </resources>

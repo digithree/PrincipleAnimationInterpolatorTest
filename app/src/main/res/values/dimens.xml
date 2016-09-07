@@ -4,4 +4,12 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="square_size">50dp</dimen>
+
+    <dimen name="menu_min_space">50dp</dimen>
+
+    <!-- fonts -->
+    <dimen name="font_size_large">18sp</dimen>
+
+    <!-- elevations -->
+    <dimen name="elevation_big_button">4dp</dimen>
 </resources>
