@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -54,6 +55,11 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
     ViewGroup mVgAnimationContainer;
     @Bind(R.id.image_view_animate)
     ImageView mIvAnimate;
+
+    @Bind(R.id.button_visualize)
+    Button mBtnVisualize;
+    @Bind(R.id.button_test)
+    Button mBtnTest;
 
     private final int []ANIMATION_RES_IDS = {
             R.anim.animate_step_1,
@@ -201,12 +207,16 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
 
     @OnClick(R.id.button_visualize)
     public void onVisualizeButtonClick() {
+        mBtnVisualize.setEnabled(false);
+        mBtnTest.setEnabled(true);
         mBezierCurveView.setVisibility(View.VISIBLE);
         mVgAnimationContainer.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.button_test)
     public void onTestButtonClick() {
+        mBtnVisualize.setEnabled(true);
+        mBtnTest.setEnabled(false);
         mBezierCurveView.setVisibility(View.GONE);
         mVgAnimationContainer.setVisibility(View.VISIBLE);
     }
