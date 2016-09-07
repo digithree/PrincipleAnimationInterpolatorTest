@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
@@ -17,6 +18,7 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
@@ -43,6 +45,8 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
 
     @Bind(R.id.bezier_curve_view)
     BezierCurveView mBezierCurveView;
+    @Bind(R.id.animation_container)
+    ViewGroup mVgAnimationContainer;
 
 
     private WeakReference<EditText> mCurrentEditTextWeakRef;
@@ -50,6 +54,8 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     private BezierInterpolator mBezierInterpolator;
+
+    private int mAnimationStep = 0;
 
 
     @Override
@@ -168,6 +174,28 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
         }
         mBezierInterpolator = new BezierInterpolator(new PointF(c1x, c1y), new PointF(c2x, c2y));
         mBezierCurveView.setInterpolator(mBezierInterpolator);
+    }
+
+    @OnClick(R.id.button_visualize)
+    public void onVisualizeButtonClick() {
+        mBezierCurveView.setVisibility(View.VISIBLE);
+        mVgAnimationContainer.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.button_test)
+    public void onTestButtonClick() {
+        mBezierCurveView.setVisibility(View.GONE);
+        mVgAnimationContainer.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.animation_container)
+    public void onAnimationContainerClick() {
+        // TODO : next animation
+    }
+
+    private void doNextAnimationStep() {
+        //mAnimationStep
+        // TODO
         /*
         Animation animation1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.translate_in_from_bottom);
         animation1.setInterpolator(new FastOutSlowInInterpolator());
