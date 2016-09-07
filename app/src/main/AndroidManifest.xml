@@ -15,8 +15,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity">
-        </activity>
         <activity android:name=".activities.BezierInterpolatorActivity"
             android:label="@string/bezier_interpolator_title"
             android:parentActivityName=".activities.MainMenuActivity" />

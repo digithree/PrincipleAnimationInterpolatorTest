@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/seek_bar_value_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_small"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edit_text_tension"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/spring_tension"
+                android:inputType="numberDecimal"
+                />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.v4.widget.Space
+            android:layout_width="8dp"
+            android:layout_height="wrap_content" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edit_text_friction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/spring_friction"
+                android:inputType="numberDecimal"
+                />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edit_text_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/spring_duration"
+            android:inputType="number"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/box_bg"
+        android:layout_marginTop="@dimen/size_standard">
+        <ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView
+            android:id="@+id/bezier_curve_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <FrameLayout
+            android:id="@+id/animation_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/image_view_animate"
+                android:layout_width="@dimen/square_size"
+                android:layout_height="@dimen/square_size"
+                android:layout_gravity="center"
+                android:background="@color/colorAccent"
+                android:visibility="invisible"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/call_to_action"/>
+        </FrameLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/size_standard"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:id="@+id/button_visualize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_visualize"
+            android:enabled="false"/>
+        <android.support.v4.widget.Space
+            android:layout_width="@dimen/size_large"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/button_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_test" />
+    </LinearLayout>
 
 </LinearLayout>

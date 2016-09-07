@@ -5,7 +5,6 @@ import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -53,6 +52,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
 
     @Bind(R.id.seek_bar_value_edit)
     AppCompatSeekBar mSbValueEdit;
+
     @Bind(R.id.edit_text_c1x)
     EditText mEtC1x;
     @Bind(R.id.edit_text_c1y)
@@ -169,6 +169,11 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
         SPrefUtils.saveString(getApplicationContext(), PREF_PY2, text.toString());
     }
 
+    @OnTextChanged(R.id.edit_text_duration)
+    void onDurationTextChanged(CharSequence text) {
+        SPrefUtils.saveString(getApplicationContext(), PREF_DURATION, text.toString());
+    }
+
 
     private View.OnFocusChangeListener mCoordinateFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
@@ -215,7 +220,6 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
     private Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.d("BezierInterpolatorTimer", "timer elapsed at "+ SystemClock.currentThreadTimeMillis());
             updateBezierInterpolator();
         }
     };

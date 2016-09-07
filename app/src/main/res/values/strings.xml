@@ -27,4 +27,8 @@
 
 
     <string name="spring_interpolator_title">Spring Interpolator</string>
+
+    <string name="spring_tension">Tension</string>
+    <string name="spring_friction">Friction</string>
+    <string name="spring_duration">Duration</string>
 </resources>
