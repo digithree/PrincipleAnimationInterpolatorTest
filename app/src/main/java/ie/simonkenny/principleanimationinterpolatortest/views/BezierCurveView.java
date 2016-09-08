@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.animation.BaseInterpolator;
 
 import ie.simonkenny.principleanimationinterpolatortest.R;
-import ie.simonkenny.principleanimationinterpolatortest.interfaces.IBezierCurveViewControlPointChange;
+import ie.simonkenny.principleanimationinterpolatortest.interfaces.IBezierCurveViewParameterChange;
 import ie.simonkenny.principleanimationinterpolatortest.interfaces.IInterpolatorRenderView;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.utils.CoordUtils;
@@ -49,7 +49,7 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
     private float lastOffsetX = 0.f;
     private float lastOffsetY = 0.f;
 
-    private IBezierCurveViewControlPointChange mListener;
+    private IBezierCurveViewParameterChange mListener;
 
 
     public BezierCurveView(Context context) {
@@ -100,7 +100,7 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
 
     // set listener
 
-    public void setListener(IBezierCurveViewControlPointChange listener) {
+    public void setListener(IBezierCurveViewParameterChange listener) {
         mListener = listener;
     }
 
@@ -140,10 +140,10 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
             float xNorm = ((float)i) / NUM_POINTS;
             float yNorm = interpolator.getInterpolation(xNorm);
             canvas.drawLine(
-                    translateFromNormalX(lastPoint.x, size, offsetX),
-                    translateFromNormalY(lastPoint.y, size, offsetY),
-                    translateFromNormalX(xNorm, size, offsetX),
-                    translateFromNormalY(yNorm, size, offsetY),
+                    CoordUtils.translateFromNormalX(lastPoint.x, size, offsetX),
+                    CoordUtils.translateFromNormalY(lastPoint.y, size, offsetY),
+                    CoordUtils.translateFromNormalX(xNorm, size, offsetX),
+                    CoordUtils.translateFromNormalY(yNorm, size, offsetY),
                     mPaintMainLine);
             lastPoint.x = xNorm;
             lastPoint.y = yNorm;
@@ -153,32 +153,34 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
         float controlPointRadius = getContext().getResources().getDimensionPixelSize(R.dimen.bezier_control_point_circle_radius);
         // c1
         PointF c1 = interpolator.getControlPoint1();
-        controlPoint1Coord = new PointF(translateFromNormalX(c1.x, size, offsetX),
-                translateFromNormalY(c1.y, size, offsetY));
+        controlPoint1Coord = new PointF(
+                CoordUtils.translateFromNormalX(c1.x, size, offsetX),
+                CoordUtils.translateFromNormalY(c1.y, size, offsetY));
         canvas.drawLine(
-                translateFromNormalX(0, size, offsetX),
-                translateFromNormalY(0, size, offsetY),
-                translateFromNormalX(c1.x, size, offsetX),
-                translateFromNormalY(c1.y, size, offsetY),
+                CoordUtils.translateFromNormalX(0, size, offsetX),
+                CoordUtils.translateFromNormalY(0, size, offsetY),
+                CoordUtils.translateFromNormalX(c1.x, size, offsetX),
+                CoordUtils.translateFromNormalY(c1.y, size, offsetY),
                 mPaintControlLine);
         canvas.drawCircle(
-                translateFromNormalX(c1.x, size, offsetX),
-                translateFromNormalY(c1.y, size, offsetY),
+                CoordUtils.translateFromNormalX(c1.x, size, offsetX),
+                CoordUtils.translateFromNormalY(c1.y, size, offsetY),
                 controlPointRadius,
                 mPaintControlCircle1);
         // c2
         PointF c2 = interpolator.getControlPoint2();
-        controlPoint2Coord = new PointF(translateFromNormalX(c2.x, size, offsetX),
-                translateFromNormalY(c2.y, size, offsetY));
+        controlPoint2Coord = new PointF(
+                CoordUtils.translateFromNormalX(c2.x, size, offsetX),
+                CoordUtils.translateFromNormalY(c2.y, size, offsetY));
         canvas.drawLine(
-                translateFromNormalX(1, size, offsetX),
-                translateFromNormalY(1, size, offsetY),
-                translateFromNormalX(c2.x, size, offsetX),
-                translateFromNormalY(c2.y, size, offsetY),
+                CoordUtils.translateFromNormalX(1, size, offsetX),
+                CoordUtils.translateFromNormalY(1, size, offsetY),
+                CoordUtils.translateFromNormalX(c2.x, size, offsetX),
+                CoordUtils.translateFromNormalY(c2.y, size, offsetY),
                 mPaintControlLine);
         canvas.drawCircle(
-                translateFromNormalX(c2.x, size, offsetX),
-                translateFromNormalY(c2.y, size, offsetY),
+                CoordUtils.translateFromNormalX(c2.x, size, offsetX),
+                CoordUtils.translateFromNormalY(c2.y, size, offsetY),
                 controlPointRadius,
                 mPaintControlCircle2);
 
@@ -245,22 +247,7 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
     }
 
     private void updateTrackedPointToListener() {
-        // normalize point
-        PointF normTrackedPoint = new PointF(
-                reverseTranslateFromNormalX(currentTrackedPoint.x, lastDrawWidth, lastOffsetX),
-                reverseTranslateFromNormalY(currentTrackedPoint.y, lastDrawHeight, lastOffsetY)
-        );
-        // make sure point if within bounds
-        if (normTrackedPoint.x < 0.f) {
-            normTrackedPoint.x = 0.f;
-        } else if (normTrackedPoint.x > 1.f) {
-            normTrackedPoint.x = 1.f;
-        }
-        if (normTrackedPoint.y < 0.f) {
-            normTrackedPoint.y = 0.f;
-        } else if (normTrackedPoint.y > 1.f) {
-            normTrackedPoint.y = 1.f;
-        }
+        PointF normTrackedPoint = CoordUtils.getNormalizedPoint(currentTrackedPoint, lastDrawWidth, lastDrawHeight, lastOffsetX, lastOffsetY);
         // report change back to listener if exists
         if (mListener != null) {
             if (mTrackedPoint == TrackedPoint.P1) {
@@ -269,25 +256,5 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
                 mListener.changeControlPoint2(normTrackedPoint);
             }
         }
-    }
-
-    // helper
-
-    float translateFromNormalX(float x, float drawWidth, float offsetX) {
-        return offsetX + (x * drawWidth);
-    }
-
-    float translateFromNormalY(float y, float drawHeight, float offsetY) {
-        return offsetY + ((1 - y) * drawHeight);
-    }
-
-    float reverseTranslateFromNormalX(float x, float drawWidth, float offsetX) {
-        float x1 = (x - offsetX);
-        return x1 == 0.f ? 0.f : (x1 / drawWidth);
-    }
-
-    float reverseTranslateFromNormalY(float y, float drawHeight, float offsetY) {
-        float y1 = (y - offsetY);
-        return y1 == 0.f ? 0.f : (1.f - (y1 / drawHeight));
     }
 }

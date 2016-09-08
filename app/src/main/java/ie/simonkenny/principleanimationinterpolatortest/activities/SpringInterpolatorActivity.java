@@ -26,14 +26,16 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.OnTextChanged;
 import ie.simonkenny.principleanimationinterpolatortest.R;
+import ie.simonkenny.principleanimationinterpolatortest.interfaces.ISpringCurveViewParameterChange;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.SpringInterpolator;
+import ie.simonkenny.principleanimationinterpolatortest.utils.CoordUtils;
 import ie.simonkenny.principleanimationinterpolatortest.utils.SPrefUtils;
 import ie.simonkenny.principleanimationinterpolatortest.views.SpringCurveView;
 
 /**
  * Created by simonkenny on 07/09/2016.
  */
-public class SpringInterpolatorActivity extends AppCompatActivity {
+public class SpringInterpolatorActivity extends AppCompatActivity implements ISpringCurveViewParameterChange {
 
     private static final String PREF_TENSION = "pref_spring_tension";
     private static final String PREF_FRICTION = "pref_spring_friction";
@@ -45,6 +47,8 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
 
     private static final int TIMER_WAIT = 1000;
 
+    private static final int TENSION_MAX = 300;
+    private static final int FRICTION_MAX = 30;
     private static final int DURATION_MAX = 3000;
 
 
@@ -130,6 +134,8 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
 
         // first time creation of BezierInterpolator with default values
         updateSpringInterpolator();
+
+        mSpringCurveView.setListener(this);
     }
 
     private void initValuesFromPrefs() {
@@ -268,6 +274,28 @@ public class SpringInterpolatorActivity extends AppCompatActivity {
             animation.setDuration((int) mDuration);
             animation.setFillAfter(true);
             mIvAnimate.startAnimation(animation);
+        }
+    }
+
+
+    // ISpringCurveViewParameterChange implementation
+
+    @Override
+    public void changeParametersNormal(float tension, float friction) {
+        if (mSpringInterpolator != null) {
+            // friction works best in the extreme start and end so adjust curve of value (aka interpolate) to minus median origin adjusted power of 3 with cap
+            float frictionReversed = 1.f - friction;
+            float frictionNormScaled = frictionReversed + (frictionReversed - (((float)Math.pow(frictionReversed - 0.5f, 3) * 4.f) + 0.5f));
+            if( frictionNormScaled < 0.f )
+                frictionNormScaled = 0.f;
+            if( frictionNormScaled > 1.f )
+                frictionNormScaled = 1.f;
+            float tensionScaled = tension * TENSION_MAX;
+            float frictionScaled = frictionNormScaled * FRICTION_MAX;
+            mEtTension.setText(String.format(Locale.getDefault(), "%.2f", tensionScaled));
+            mEtFriction.setText(String.format(Locale.getDefault(), "%.2f", frictionScaled));
+            mSpringInterpolator = new SpringInterpolator(tensionScaled, frictionScaled, false);
+            mSpringCurveView.setInterpolator(mSpringInterpolator);
         }
     }
 }

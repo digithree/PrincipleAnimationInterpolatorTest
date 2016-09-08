@@ -33,6 +33,14 @@ public class SpringInterpolator extends BaseInterpolator {
         init();
     }
 
+    public float getFriction() {
+        return friction;
+    }
+
+    public float getTension() {
+        return tension;
+    }
+
     @Override
     public float getInterpolation(float v) {
         return samples[(int)(v * (float)(NUM_SAMPLES-1))];

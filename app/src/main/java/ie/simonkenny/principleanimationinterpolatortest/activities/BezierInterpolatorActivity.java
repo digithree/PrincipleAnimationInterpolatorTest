@@ -25,7 +25,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.OnTextChanged;
 import ie.simonkenny.principleanimationinterpolatortest.R;
-import ie.simonkenny.principleanimationinterpolatortest.interfaces.IBezierCurveViewControlPointChange;
+import ie.simonkenny.principleanimationinterpolatortest.interfaces.IBezierCurveViewParameterChange;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.utils.SPrefUtils;
 import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
@@ -33,7 +33,7 @@ import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
 /**
  * Created by simonkenny on 07/09/2016.
  */
-public class BezierInterpolatorActivity extends AppCompatActivity implements IBezierCurveViewControlPointChange {
+public class BezierInterpolatorActivity extends AppCompatActivity implements IBezierCurveViewParameterChange {
 
     private static final String PREF_PX1 = "pref_bezier_px1";
     private static final String PREF_PY1 = "pref_bezier_py1";
