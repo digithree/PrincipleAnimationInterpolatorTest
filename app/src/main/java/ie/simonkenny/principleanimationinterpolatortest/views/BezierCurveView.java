@@ -225,35 +225,13 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
                     && (mTrackedPoint == TrackedPoint.P1 || mTrackedPoint == TrackedPoint.P2)) {
                 currentTrackedPoint.x = event.getX();
                 currentTrackedPoint.y = event.getY();
+                updateTrackedPointToListener();
                 invalidate();
             }
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             if (currentTrackedPoint != null
                     && (mTrackedPoint == TrackedPoint.P1 || mTrackedPoint == TrackedPoint.P2)) {
-                // normalize point
-                PointF normTrackedPoint = new PointF(
-                        reverseTranslateFromNormalX(currentTrackedPoint.x, lastDrawWidth, lastOffsetX),
-                        reverseTranslateFromNormalY(currentTrackedPoint.y, lastDrawHeight, lastOffsetY)
-                );
-                // make sure point if within bounds
-                if (normTrackedPoint.x < 0.f) {
-                    normTrackedPoint.x = 0.f;
-                } else if (normTrackedPoint.x > 1.f) {
-                    normTrackedPoint.x = 1.f;
-                }
-                if (normTrackedPoint.y < 0.f) {
-                    normTrackedPoint.y = 0.f;
-                } else if (normTrackedPoint.y > 1.f) {
-                    normTrackedPoint.y = 1.f;
-                }
-                // report change back to listener if exists
-                if (mListener != null) {
-                    if (mTrackedPoint == TrackedPoint.P1) {
-                        mListener.changeControlPoint1(normTrackedPoint);
-                    } else {
-                        mListener.changeControlPoint2(normTrackedPoint);
-                    }
-                }
+                updateTrackedPointToListener();
                 Log.d("BezierCurveView", "onTouchEvent, ACTION_UP, point 1 or 2");
                 // reset point tracking when done
                 mTrackedPoint = TrackedPoint.NONE;
@@ -266,6 +244,32 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
         return false;
     }
 
+    private void updateTrackedPointToListener() {
+        // normalize point
+        PointF normTrackedPoint = new PointF(
+                reverseTranslateFromNormalX(currentTrackedPoint.x, lastDrawWidth, lastOffsetX),
+                reverseTranslateFromNormalY(currentTrackedPoint.y, lastDrawHeight, lastOffsetY)
+        );
+        // make sure point if within bounds
+        if (normTrackedPoint.x < 0.f) {
+            normTrackedPoint.x = 0.f;
+        } else if (normTrackedPoint.x > 1.f) {
+            normTrackedPoint.x = 1.f;
+        }
+        if (normTrackedPoint.y < 0.f) {
+            normTrackedPoint.y = 0.f;
+        } else if (normTrackedPoint.y > 1.f) {
+            normTrackedPoint.y = 1.f;
+        }
+        // report change back to listener if exists
+        if (mListener != null) {
+            if (mTrackedPoint == TrackedPoint.P1) {
+                mListener.changeControlPoint1(normTrackedPoint);
+            } else {
+                mListener.changeControlPoint2(normTrackedPoint);
+            }
+        }
+    }
 
     // helper
 

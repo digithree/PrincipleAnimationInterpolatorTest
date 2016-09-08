@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-            <EditText
+            <ie.simonkenny.principleanimationinterpolatortest.views.CustomEditText
                 android:id="@+id/edit_text_c1x"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-            <EditText
+            <ie.simonkenny.principleanimationinterpolatortest.views.CustomEditText
                 android:id="@+id/edit_text_c1y"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-            <EditText
+            <ie.simonkenny.principleanimationinterpolatortest.views.CustomEditText
                 android:id="@+id/edit_text_c2x"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-            <EditText
+            <ie.simonkenny.principleanimationinterpolatortest.views.CustomEditText
                 android:id="@+id/edit_text_c2y"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <EditText
+        <ie.simonkenny.principleanimationinterpolatortest.views.CustomEditText
             android:id="@+id/edit_text_duration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

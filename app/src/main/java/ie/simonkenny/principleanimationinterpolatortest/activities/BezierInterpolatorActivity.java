@@ -47,6 +47,8 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
     private static final String DEFAULT_PY2 = "1.0";
     private static final String DEFAULT_DURATION = "1000";
 
+    private static final boolean SETTING_UPDATE_DELAY_ACTIVE = false;
+
     private static final int TIMER_WAIT = 1000;
 
     private static final int DURATION_MAX = 3000;
@@ -124,7 +126,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
                     } else {
                         editText.setText(String.format(Locale.getDefault(), "%.2f", (((float)i) / (float)DURATION_MAX)));
                     }
-                    restartTimer();
+                    updateValue();
                 }
             }
 
@@ -157,26 +159,31 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
     @OnTextChanged(R.id.edit_text_c1x)
     void onC1xTextChanged(CharSequence text) {
         SPrefUtils.saveString(getApplicationContext(), PREF_PX1, text.toString());
+        updateSeekBarWithCoordEditTextChange(mEtC1x);
     }
 
     @OnTextChanged(R.id.edit_text_c1y)
     void onC1yTextChanged(CharSequence text) {
         SPrefUtils.saveString(getApplicationContext(), PREF_PY1, text.toString());
+        updateSeekBarWithCoordEditTextChange(mEtC1y);
     }
 
     @OnTextChanged(R.id.edit_text_c2x)
     void onC2xTextChanged(CharSequence text) {
         SPrefUtils.saveString(getApplicationContext(), PREF_PX2, text.toString());
+        updateSeekBarWithCoordEditTextChange(mEtC2x);
     }
 
     @OnTextChanged(R.id.edit_text_c2y)
     void onC2yTextChanged(CharSequence text) {
         SPrefUtils.saveString(getApplicationContext(), PREF_PY2, text.toString());
+        updateSeekBarWithCoordEditTextChange(mEtC2y);
     }
 
     @OnTextChanged(R.id.edit_text_duration)
     void onDurationTextChanged(CharSequence text) {
         SPrefUtils.saveString(getApplicationContext(), PREF_DURATION, text.toString());
+        updateSeekBarWithDurationEditTextChange(mEtDuration);
     }
 
 
@@ -187,17 +194,8 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
                 return;
             }
             EditText editText = (EditText) view;
-            mSeekBarChangeFreeze = true;
-            try {
-                float value = Float.parseFloat(editText.getText().toString());
-                mSbValueEdit.setProgress((int)(value * DURATION_MAX));
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                mSeekBarChangeFreeze = false;
-                return;
-            }
-            mSeekBarChangeFreeze = false;
             mCurrentEditTextWeakRef = new WeakReference<>(editText);
+            updateSeekBarWithCoordEditTextChange(editText);
         }
     };
 
@@ -208,19 +206,40 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
                 return;
             }
             EditText editText = (EditText) view;
+            mCurrentEditTextWeakRef = new WeakReference<>(editText);
+            updateSeekBarWithDurationEditTextChange(editText);
+        }
+    };
+
+
+    private void updateSeekBarWithCoordEditTextChange(EditText editText) {
+        if (mCurrentEditTextWeakRef != null && mCurrentEditTextWeakRef.get() != null && mCurrentEditTextWeakRef.get() == editText) {
             mSeekBarChangeFreeze = true;
             try {
-                int value = Integer.parseInt(editText.getText().toString());
-                mSbValueEdit.setProgress(value);
+                float value = Float.parseFloat(editText.getText().toString());
+                mSbValueEdit.setProgress((int)(value * DURATION_MAX));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 mSeekBarChangeFreeze = false;
                 return;
             }
             mSeekBarChangeFreeze = false;
-            mCurrentEditTextWeakRef = new WeakReference<>(editText);
         }
-    };
+    }
+
+    private void updateSeekBarWithDurationEditTextChange(EditText editText) {
+        mSeekBarChangeFreeze = true;
+        try {
+            int value = Integer.parseInt(editText.getText().toString());
+            mSbValueEdit.setProgress(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            mSeekBarChangeFreeze = false;
+            return;
+        }
+        mSeekBarChangeFreeze = false;
+    }
+
 
     private Runnable timerRunnable = new Runnable() {
         @Override
@@ -228,6 +247,15 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
             updateBezierInterpolator();
         }
     };
+
+    private void updateValue() {
+        if (SETTING_UPDATE_DELAY_ACTIVE) {
+            restartTimer();
+        } else {
+            updateBezierInterpolator();
+        }
+    }
+
 
     private void restartTimer() {
         mHandler.removeCallbacks(timerRunnable);
