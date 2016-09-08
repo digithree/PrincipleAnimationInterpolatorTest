@@ -9,8 +9,9 @@
     <color name="box_bg">#E9E9E9</color>
 
     <color name="curve_main_line">#000000</color>
-    <color name="curve_control_line">@color/colorSecondary</color>
-    <color name="curve_control_circle">@color/colorAccent</color>
+    <color name="curve_control_line">#999999</color>
+    <color name="curve_control_circle1">@color/colorAccent</color>
+    <color name="curve_control_circle2">@color/colorSecondary</color>
 
     <color name="curve_centre_line">@color/colorAccent</color>
 </resources>

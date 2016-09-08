@@ -25,6 +25,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.OnTextChanged;
 import ie.simonkenny.principleanimationinterpolatortest.R;
+import ie.simonkenny.principleanimationinterpolatortest.interfaces.IBezierCurveViewControlPointChange;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.utils.SPrefUtils;
 import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
@@ -32,7 +33,7 @@ import ie.simonkenny.principleanimationinterpolatortest.views.BezierCurveView;
 /**
  * Created by simonkenny on 07/09/2016.
  */
-public class BezierInterpolatorActivity extends AppCompatActivity {
+public class BezierInterpolatorActivity extends AppCompatActivity implements IBezierCurveViewControlPointChange {
 
     private static final String PREF_PX1 = "pref_bezier_px1";
     private static final String PREF_PY1 = "pref_bezier_py1";
@@ -139,6 +140,9 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
 
         // first time creation of BezierInterpolator with default values
         updateBezierInterpolator();
+
+        // set listener for touch value changes
+        mBezierCurveView.setListener(this);
     }
 
     private void initValuesFromPrefs() {
@@ -296,6 +300,31 @@ public class BezierInterpolatorActivity extends AppCompatActivity {
             animation.setDuration((int) mDuration);
             animation.setFillAfter(true);
             mIvAnimate.startAnimation(animation);
+        }
+    }
+
+
+    // IBezierCurveViewControlPointChange implementation
+
+    @Override
+    public void changeControlPoint1(PointF cp1) {
+        if (mBezierInterpolator != null) {
+            mEtC1x.setText(String.format(Locale.getDefault(), "%.2f", cp1.x));
+            mEtC1y.setText(String.format(Locale.getDefault(), "%.2f", cp1.y));
+            PointF cp2 = mBezierInterpolator.getControlPoint2();
+            mBezierInterpolator = new BezierInterpolator(cp1, cp2);
+            mBezierCurveView.setInterpolator(mBezierInterpolator);
+        }
+    }
+
+    @Override
+    public void changeControlPoint2(PointF cp2) {
+        if (mBezierInterpolator != null) {
+            mEtC2x.setText(String.format(Locale.getDefault(), "%.2f", cp2.x));
+            mEtC2y.setText(String.format(Locale.getDefault(), "%.2f", cp2.y));
+            PointF cp1 = mBezierInterpolator.getControlPoint1();
+            mBezierInterpolator = new BezierInterpolator(cp1, cp2);
+            mBezierCurveView.setInterpolator(mBezierInterpolator);
         }
     }
 }

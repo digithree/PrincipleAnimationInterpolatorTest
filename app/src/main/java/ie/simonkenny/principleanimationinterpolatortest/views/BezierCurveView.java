@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.BaseInterpolator;
 
 import ie.simonkenny.principleanimationinterpolatortest.R;
+import ie.simonkenny.principleanimationinterpolatortest.interfaces.IBezierCurveViewControlPointChange;
 import ie.simonkenny.principleanimationinterpolatortest.interfaces.IInterpolatorRenderView;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.BezierInterpolator;
 import ie.simonkenny.principleanimationinterpolatortest.utils.CoordUtils;
@@ -33,8 +34,8 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
 
     private Paint mPaintMainLine;
     private Paint mPaintControlLine;
-    private Paint mPaintControlCircle;
-    private Paint mPaintEditCircle;
+    private Paint mPaintControlCircle1;
+    private Paint mPaintControlCircle2;
 
     private PointF controlPoint1Coord;
     private PointF controlPoint2Coord;
@@ -42,6 +43,13 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
     private TrackedPoint mTrackedPoint;
 
     private float mMinTrackingDist = 0.f;
+
+    private float lastDrawWidth = 0.f;
+    private float lastDrawHeight = 0.f;
+    private float lastOffsetX = 0.f;
+    private float lastOffsetY = 0.f;
+
+    private IBezierCurveViewControlPointChange mListener;
 
 
     public BezierCurveView(Context context) {
@@ -78,15 +86,22 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
         mPaintControlLine.setColor(ContextCompat.getColor(getContext(), R.color.curve_control_line));
         mPaintControlLine.setStrokeWidth(2);
 
-        mPaintControlCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintControlCircle.setStyle(Paint.Style.FILL);
-        mPaintControlCircle.setColor(ContextCompat.getColor(getContext(), R.color.curve_control_circle));
+        mPaintControlCircle1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintControlCircle1.setStyle(Paint.Style.FILL);
+        mPaintControlCircle1.setColor(ContextCompat.getColor(getContext(), R.color.curve_control_circle1));
 
-        mPaintEditCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaintEditCircle.setStyle(Paint.Style.FILL);
-        mPaintEditCircle.setColor(ContextCompat.getColor(getContext(), R.color.colorSecondary));
+        mPaintControlCircle2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaintControlCircle2.setStyle(Paint.Style.FILL);
+        mPaintControlCircle2.setColor(ContextCompat.getColor(getContext(), R.color.curve_control_circle2));
 
         mMinTrackingDist = getContext().getResources().getDimensionPixelSize(R.dimen.bezier_edit_min_tracking_dist);
+    }
+
+
+    // set listener
+
+    public void setListener(IBezierCurveViewControlPointChange listener) {
+        mListener = listener;
     }
 
 
@@ -113,6 +128,11 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
         float size = Math.min(canvasDim.x, canvasDim.y) - getContext().getResources().getDimensionPixelSize(R.dimen.size_standard);
         float offsetX = (canvasDim.x / 2) - (size / 2);
         float offsetY = (canvasDim.y / 2) - (size / 2);
+
+        lastDrawWidth = size;
+        lastDrawHeight = size;
+        lastOffsetX = offsetX;
+        lastOffsetY = offsetY;
 
         // draw main curve
         PointF lastPoint = new PointF(0, 0);
@@ -145,7 +165,7 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
                 translateFromNormalX(c1.x, size, offsetX),
                 translateFromNormalY(c1.y, size, offsetY),
                 controlPointRadius,
-                mPaintControlCircle);
+                mPaintControlCircle1);
         // c2
         PointF c2 = interpolator.getControlPoint2();
         controlPoint2Coord = new PointF(translateFromNormalX(c2.x, size, offsetX),
@@ -160,7 +180,7 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
                 translateFromNormalX(c2.x, size, offsetX),
                 translateFromNormalY(c2.y, size, offsetY),
                 controlPointRadius,
-                mPaintControlCircle);
+                mPaintControlCircle2);
 
         // draw edit point if exists
         float editPointRadius = getContext().getResources().getDimensionPixelSize(R.dimen.bezier_edit_point_circle_radius);
@@ -169,7 +189,7 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
                     currentTrackedPoint.x,
                     currentTrackedPoint.y,
                     editPointRadius,
-                    mPaintEditCircle);
+                    mTrackedPoint == TrackedPoint.P1 ? mPaintControlCircle1 : mPaintControlCircle2);
         }
     }
 
@@ -191,6 +211,7 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
                         mTrackedPoint = TrackedPoint.P2;
                         Log.d("BezierCurveView", "onTouchEvent, ACTION_DOWN, point 2 nearest");
                     }
+                    invalidate();
                     return true;
                 } else {
                     mTrackedPoint = TrackedPoint.NONE;
@@ -204,15 +225,40 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
                     && (mTrackedPoint == TrackedPoint.P1 || mTrackedPoint == TrackedPoint.P2)) {
                 currentTrackedPoint.x = event.getX();
                 currentTrackedPoint.y = event.getY();
+                invalidate();
             }
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             if (currentTrackedPoint != null
                     && (mTrackedPoint == TrackedPoint.P1 || mTrackedPoint == TrackedPoint.P2)) {
-                // TODO : set P1 or P2
+                // normalize point
+                PointF normTrackedPoint = new PointF(
+                        reverseTranslateFromNormalX(currentTrackedPoint.x, lastDrawWidth, lastOffsetX),
+                        reverseTranslateFromNormalY(currentTrackedPoint.y, lastDrawHeight, lastOffsetY)
+                );
+                // make sure point if within bounds
+                if (normTrackedPoint.x < 0.f) {
+                    normTrackedPoint.x = 0.f;
+                } else if (normTrackedPoint.x > 1.f) {
+                    normTrackedPoint.x = 1.f;
+                }
+                if (normTrackedPoint.y < 0.f) {
+                    normTrackedPoint.y = 0.f;
+                } else if (normTrackedPoint.y > 1.f) {
+                    normTrackedPoint.y = 1.f;
+                }
+                // report change back to listener if exists
+                if (mListener != null) {
+                    if (mTrackedPoint == TrackedPoint.P1) {
+                        mListener.changeControlPoint1(normTrackedPoint);
+                    } else {
+                        mListener.changeControlPoint2(normTrackedPoint);
+                    }
+                }
                 Log.d("BezierCurveView", "onTouchEvent, ACTION_UP, point 1 or 2");
                 // reset point tracking when done
                 mTrackedPoint = TrackedPoint.NONE;
                 currentTrackedPoint = null;
+                invalidate();
             } else {
                 Log.d("BezierCurveView", "onTouchEvent, ACTION_UP, no point captured");
             }
@@ -229,5 +275,15 @@ public class BezierCurveView extends View implements IInterpolatorRenderView {
 
     float translateFromNormalY(float y, float drawHeight, float offsetY) {
         return offsetY + ((1 - y) * drawHeight);
+    }
+
+    float reverseTranslateFromNormalX(float x, float drawWidth, float offsetX) {
+        float x1 = (x - offsetX);
+        return x1 == 0.f ? 0.f : (x1 / drawWidth);
+    }
+
+    float reverseTranslateFromNormalY(float y, float drawHeight, float offsetY) {
+        float y1 = (y - offsetY);
+        return y1 == 0.f ? 0.f : (1.f - (y1 / drawHeight));
     }
 }

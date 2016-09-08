@@ -7,7 +7,7 @@
 
     <dimen name="bezier_control_point_circle_radius">4dp</dimen>
     <dimen name="bezier_edit_point_circle_radius">10dp</dimen>
-    <dimen name="bezier_edit_min_tracking_dist">100dp</dimen>
+    <dimen name="bezier_edit_min_tracking_dist">200dp</dimen>
 
     <!-- sizes -->
     <dimen name="size_small">8dp</dimen>
