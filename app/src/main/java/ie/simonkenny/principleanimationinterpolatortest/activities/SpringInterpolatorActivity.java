@@ -3,11 +3,9 @@ package ie.simonkenny.principleanimationinterpolatortest.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -28,7 +26,6 @@ import butterknife.OnTextChanged;
 import ie.simonkenny.principleanimationinterpolatortest.R;
 import ie.simonkenny.principleanimationinterpolatortest.interfaces.ISpringCurveViewParameterChange;
 import ie.simonkenny.principleanimationinterpolatortest.interpolators.SpringInterpolator;
-import ie.simonkenny.principleanimationinterpolatortest.utils.CoordUtils;
 import ie.simonkenny.principleanimationinterpolatortest.utils.SPrefUtils;
 import ie.simonkenny.principleanimationinterpolatortest.views.SpringCurveView;
 
@@ -44,6 +41,8 @@ public class SpringInterpolatorActivity extends AppCompatActivity implements ISp
     private static final String DEFAULT_TENSION = "250";
     private static final String DEFAULT_FRICTION = "5";
     private static final String DEFAULT_DURATION = "1000";
+
+    private static final boolean SETTING_UPDATE_DELAY_ACTIVE = false;
 
     private static final int TIMER_WAIT = 1000;
 
@@ -118,7 +117,7 @@ public class SpringInterpolatorActivity extends AppCompatActivity implements ISp
                     } else {
                         editText.setText(String.format(Locale.getDefault(), "%d", (i != 0 ? (i / 10) : 0)));
                     }
-                    restartTimer();
+                    updateValue();
                 }
             }
 
@@ -167,17 +166,8 @@ public class SpringInterpolatorActivity extends AppCompatActivity implements ISp
                 return;
             }
             EditText editText = (EditText) view;
-            mSeekBarChangeFreeze = true;
-            try {
-                int value = Integer.parseInt(editText.getText().toString());
-                mSbValueEdit.setProgress(value * 10);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                mSeekBarChangeFreeze = false;
-                return;
-            }
-            mSeekBarChangeFreeze = false;
             mCurrentEditTextWeakRef = new WeakReference<>(editText);
+            updateSeekBarWithValueEditTextChange(editText);
         }
     };
 
@@ -188,19 +178,48 @@ public class SpringInterpolatorActivity extends AppCompatActivity implements ISp
                 return;
             }
             EditText editText = (EditText) view;
+            mCurrentEditTextWeakRef = new WeakReference<>(editText);
+            updateSeekBarWithDurationEditTextChange(editText);
+        }
+    };
+
+    private void updateSeekBarWithValueEditTextChange(EditText editText) {
+        if (mCurrentEditTextWeakRef != null && mCurrentEditTextWeakRef.get() != null && mCurrentEditTextWeakRef.get() == editText) {
             mSeekBarChangeFreeze = true;
             try {
                 int value = Integer.parseInt(editText.getText().toString());
-                mSbValueEdit.setProgress(value);
+                mSbValueEdit.setProgress(value * 10);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 mSeekBarChangeFreeze = false;
                 return;
             }
+            updateValue();
             mSeekBarChangeFreeze = false;
-            mCurrentEditTextWeakRef = new WeakReference<>(editText);
         }
-    };
+    }
+
+    private void updateSeekBarWithDurationEditTextChange(EditText editText) {
+        mSeekBarChangeFreeze = true;
+        try {
+            int value = Integer.parseInt(editText.getText().toString());
+            mSbValueEdit.setProgress(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            mSeekBarChangeFreeze = false;
+            return;
+        }
+        updateValue();
+        mSeekBarChangeFreeze = false;
+    }
+
+    private void updateValue() {
+        if (SETTING_UPDATE_DELAY_ACTIVE) {
+            restartTimer();
+        } else {
+            updateSpringInterpolator();
+        }
+    }
 
     private Runnable timerRunnable = new Runnable() {
         @Override

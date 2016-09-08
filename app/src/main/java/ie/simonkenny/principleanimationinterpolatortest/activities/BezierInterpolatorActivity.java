@@ -126,7 +126,6 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
                     } else {
                         editText.setText(String.format(Locale.getDefault(), "%.2f", (((float)i) / (float)DURATION_MAX)));
                     }
-                    updateValue();
                 }
             }
 
@@ -223,6 +222,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
                 mSeekBarChangeFreeze = false;
                 return;
             }
+            updateValue();
             mSeekBarChangeFreeze = false;
         }
     }
@@ -237,6 +237,7 @@ public class BezierInterpolatorActivity extends AppCompatActivity implements IBe
             mSeekBarChangeFreeze = false;
             return;
         }
+        updateValue();
         mSeekBarChangeFreeze = false;
     }
 

@@ -71,7 +71,7 @@ public class SpringCurveView extends View implements IInterpolatorRenderView {
 
         mPaintCentreLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintCentreLine.setStyle(Paint.Style.STROKE);
-        mPaintCentreLine.setColor(ContextCompat.getColor(getContext(), R.color.curve_centre_line));
+        mPaintCentreLine.setColor(ContextCompat.getColor(getContext(), R.color.curve_control_line));
         mPaintCentreLine.setStrokeWidth(2);
 
         mPaintControlLine1 = new Paint(Paint.ANTI_ALIAS_FLAG);
